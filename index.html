@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="QuantForge helps traders create editable TradingView Pine Script starter templates for indicators and backtesting.">
+<title>QuantForge — Build. Test. Understand.</title>
+<style>
+:root{--bg:#080d18;--panel:#111a2b;--panel2:#18263a;--text:#eef4ff;--muted:#a7b6cc;--line:#293950;--mint:#8af0bd;--cyan:#8bd8ff;--amber:#ffdfa1}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 95% 0%,#183b43 0,transparent 34%),radial-gradient(ellipse at 0% 18%,#172744 0,transparent 35%),var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:1120px;margin:auto;padding:22px}.nav{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0 18px;border-bottom:1px solid var(--line)}.brand{font-size:1.3rem;font-weight:850;letter-spacing:-.05em}.brand b{color:var(--mint)}.pill{border:1px solid var(--line);border-radius:999px;padding:5px 10px;color:var(--muted);font-size:.78rem}
+.hero{padding:50px 0 28px;max-width:800px}.eyebrow{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--mint)}h1{font-size:clamp(2.4rem,6vw,4.5rem);line-height:1.01;letter-spacing:-.06em;margin:12px 0 18px}h1 em{font-style:normal;color:var(--mint)}.hero p{max-width:690px;color:var(--muted);font-size:1.1rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{border:1px solid var(--line);background:rgba(17,26,43,.96);border-radius:18px;padding:22px;box-shadow:0 20px 60px #0002}.card h2{font-size:1.15rem;margin:0 0 4px}.sub{color:var(--muted);font-size:.9rem;margin:0 0 16px}label{display:block;font-weight:700;font-size:.9rem;margin:14px 0 7px}
+input,select,textarea{width:100%;background:#091221;border:1px solid #354962;color:var(--text);border-radius:10px;padding:12px;font:inherit}textarea{min-height:95px;resize:vertical}input:focus,select:focus,textarea:focus{outline:2px solid var(--mint);outline-offset:1px}
+button{border:0;border-radius:10px;padding:11px 15px;background:var(--mint);color:#062116;font:inherit;font-weight:800;cursor:pointer}button.secondary{background:var(--panel2);border:1px solid var(--line);color:var(--text)}button:hover{filter:brightness(1.07)}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}.output-head{display:flex;justify-content:space-between;align-items:center;gap:10px}pre{white-space:pre;overflow:auto;min-height:320px;max-height:560px;background:#070b12;border:1px solid var(--line);border-radius:12px;padding:15px;color:#d9e8ff;font:12.5px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace}.notice{border:1px solid #5a4a2c;background:#292316;color:var(--amber);padding:12px;border-radius:10px;font-size:.84rem;margin-top:14px}.features{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0 38px}.feature{background:#101929;border:1px solid var(--line);border-radius:14px;padding:16px}.feature b{display:block;margin-bottom:5px}.feature span{font-size:.9rem;color:var(--muted)}.status{color:var(--mint);min-height:1.5em;font-size:.88rem}.footer{border-top:1px solid var(--line);padding:20px 0 34px;color:var(--muted);font-size:.84rem}.tiny{font-size:.8rem;color:var(--muted)}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.features{grid-template-columns:1fr}.wrap{padding:15px}.hero{padding-top:34px}.card{padding:17px}}
+</style>
+</head>
+<body><main class="wrap">
+<nav class="nav"><div class="brand">◈ <b>Quant</b>Forge</div><div class="pill">Prototype v0.2 · Pine Script v6</div></nav>
+<header class="hero"><div class="eyebrow">Trading ideas → editable code</div><h1>Build your idea.<br><em>Test the rules.</em></h1><p>Generate a starter TradingView script from a few settings. Understand the logic, edit the code, and test it yourself. No performance promises—just a better starting point for systematic research.</p></header>
+<section class="grid">
+<div class="card">
+<h2>Configure your script</h2><p class="sub">This prototype generates templates in your browser. No AI service or API key is connected.</p>
+<label for="type">What are you building?</label><select id="type"><option value="indicator">Moving-average crossover indicator</option><option value="strategy">Moving-average crossover strategy (backtest)</option><option value="rsi">RSI threshold indicator</option></select>
+<label for="fast">Fast length / RSI period</label><input id="fast" type="number" min="2" max="200" value="9">
+<label for="slow">Slow length / RSI lower threshold</label><input id="slow" type="number" min="3" max="500" value="21">
+<label for="risk">Strategy commission (%)</label><input id="risk" type="number" min="0" max="5" step="0.01" value="0.1">
+<label for="notes">Describe your idea (saved nowhere in this demo)</label><textarea id="notes" placeholder="Example: Compare a 9-period EMA with a 21-period EMA. Show crossover markers."></textarea>
+<div class="actions"><button id="generate">Generate Pine Script</button><button class="secondary" id="example">Load example</button></div><p class="status" id="status" aria-live="polite"></p>
+</div>
+<div class="card">
+<div class="output-head"><div><h2>Your Pine Script</h2><p class="sub">Copy into TradingView's Pine Editor.</p></div><span class="pill">v6</span></div>
+<pre id="output">// Configure your idea, then click “Generate Pine Script”.</pre>
+<div class="actions"><button class="secondary" id="copy">Copy code</button><button class="secondary" id="download">Download .pine</button></div>
+<div class="notice"><b>Research only:</b> Starter code is not financial advice and is not a recommendation to buy or sell. Backtests can be misleading due to fees, slippage, overfitting, lookahead bias, and market changes. Test on historical and out-of-sample data before considering any real-money use.</div>
+</div>
+</section>
+<section class="features">
+<div class="feature"><b>⌁ Indicator templates</b><span>Build visual signals for chart research.</span></div><div class="feature"><b>▦ Backtest templates</b><span>Use simulated entries and exits in TradingView.</span></div><div class="feature"><b>◉ Clear assumptions</b><span>Keep parameters visible and code editable.</span></div>
+</section>
+<footer class="footer">QuantForge is an independent prototype and is not affiliated with TradingView. No user accounts, AI generation, live market data, broker connections, or payments are connected. Generated scripts require independent review and testing.</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);let currentCode="// Generate a script first.";
+function generate(){
+ const type=$("type").value;let fast=Math.max(2,Math.min(200,Number.parseInt($("fast").value)||9));let slow=Math.max(3,Math.min(500,Number.parseInt($("slow").value)||21));let commission=Math.max(0,Math.min(5,Number.parseFloat($("risk").value)||0));const note=$("notes").value.trim().replace(/\s+/g," ").slice(0,180);const comment=note?"// User brief: "+note+"\n":"";
+ let code="";
+ if(type==="indicator"){
+ code=`//@version=6
+indicator("QuantForge MA Cross Starter", overlay=true)
+
+// ${"Starter template generated by QuantForge"}
+${comment}fastLength = input.int(${fast}, "Fast EMA length", minval=1)
+slowLength = input.int(${Math.max(fast+1,slow)}, "Slow EMA length", minval=2)
+
+fastEMA = ta.ema(close, fastLength)
+slowEMA = ta.ema(close, slowLength)
+
+bullishCross = ta.crossover(fastEMA, slowEMA)
+bearishCross = ta.crossunder(fastEMA, slowEMA)
+
+plot(fastEMA, "Fast EMA", color=color.aqua, linewidth=2)
+plot(slowEMA, "Slow EMA", color=color.orange, linewidth=2)
+plotshape(bullishCross, title="Bullish cross", style=shape.triangleup, location=location.belowbar, color=color.lime, size=size.tiny, text="Cross Up")
+plotshape(bearishCross, title="Bearish cross", style=shape.triangledown, location=location.abovebar, color=color.red, size=size.tiny, text="Cross Down")
+
+// Signals are educational chart markers, not trade recommendations.
+`;
+ }else if(type==="strategy"){
+ code=`//@version=6
+strategy("QuantForge MA Cross Backtest Starter", overlay=true, commission_type=strategy.commission.percent, commission_value=${commission}, initial_capital=10000)
+
+// ${"Educational backtest template; results are hypothetical."}
+${comment}fastLength = input.int(${fast}, "Fast EMA length", minval=1)
+slowLength = input.int(${Math.max(fast+1,slow)}, "Slow EMA length", minval=2)
+
+fastEMA = ta.ema(close, fastLength)
+slowEMA = ta.ema(close, slowLength)
+
+longCondition = ta.crossover(fastEMA, slowEMA)
+exitCondition = ta.crossunder(fastEMA, slowEMA)
+
+if longCondition
+    strategy.entry("Long", strategy.long)
+if exitCondition
+    strategy.close("Long")
+
+plot(fastEMA, "Fast EMA", color=color.aqua, linewidth=2)
+plot(slowEMA, "Slow EMA", color=color.orange, linewidth=2)
+
+// Review position sizing, fees, slippage, timeframe and date range.
+// This starter only models long entries; it does not promise profitability.
+`;
+ }else{
+ const upper=Math.min(99,Math.max(51,100-slow)); const lower=Math.min(49,Math.max(1,slow));
+ code=`//@version=6
+indicator("QuantForge RSI Threshold Starter", overlay=false)
+
+${comment}rsiLength = input.int(${fast}, "RSI period", minval=1)
+lowerLevel = input.float(${lower}, "Lower threshold", minval=0, maxval=100)
+upperLevel = input.float(${upper}, "Upper threshold", minval=0, maxval=100)
+
+rsiValue = ta.rsi(close, rsiLength)
+plot(rsiValue, "RSI", color=color.aqua, linewidth=2)
+hline(upperLevel, "Upper threshold", color=color.red)
+hline(50, "Midline", color=color.gray)
+hline(lowerLevel, "Lower threshold", color=color.lime)
+
+alertcondition(ta.crossover(rsiValue, lowerLevel), "RSI crosses above lower", "RSI crossed above the lower threshold")
+alertcondition(ta.crossunder(rsiValue, upperLevel), "RSI crosses below upper", "RSI crossed below the upper threshold")
+
+// Threshold crossings are not, by themselves, trading advice.
+`;
+ }
+ currentCode=code;$("output").textContent=code;$("status").textContent="Template generated. Paste it into TradingView's Pine Editor and test it.";
+}
+$("generate").addEventListener("click",generate);
+$("example").addEventListener("click",()=>{$("type").value="strategy";$("fast").value=9;$("slow").value=21;$("risk").value=0.1;$("notes").value="Compare fast and slow exponential moving averages; enter on cross up and close on cross down.";generate();});
+$("copy").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(currentCode);$("status").textContent="Code copied.";}catch(e){$("status").textContent="Clipboard access blocked; select the code and copy manually."; }});
+$("download").addEventListener("click",()=>{const blob=new Blob([currentCode],{type:"text/plain;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="quantforge-starter.pine";a.click();URL.revokeObjectURL(url);$("status").textContent="Download started.";});
+generate();
+</script></body></html>
